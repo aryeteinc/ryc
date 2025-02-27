@@ -1,0 +1,69 @@
+---
+/**
+ * Componente LazySection
+ * 
+ * Este componente permite cargar secciones de manera diferida,
+ * mostrándolas solo cuando el usuario se acerca a ellas.
+ * Útil para secciones pesadas o que están más abajo en la página.
+ */
+
+interface Props {
+  threshold?: number;  // Umbral de visibilidad (0-1) para activar la carga
+  rootMargin?: string; // Margen adicional para el área de observación
+  class?: string;      // Clases CSS adicionales
+  id?: string;         // ID opcional para la sección
+}
+
+const { 
+  threshold = 0.1, 
+  rootMargin = '200px 0px', 
+  class: className = "",
+  id
+} = Astro.props;
+---
+
+<section 
+  id={id} 
+  class:list={["lazy-section opacity-0 transition-opacity duration-700", className]}
+  data-threshold={threshold}
+  data-rootmargin={rootMargin}
+>
+  <slot />
+</section>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const sections = document.querySelectorAll('.lazy-section');
+    
+    if ('IntersectionObserver' in window) {
+      sections.forEach(section => {
+        const threshold = parseFloat(section.getAttribute('data-threshold') || '0.1');
+        const rootMargin = section.getAttribute('data-rootmargin') || '200px 0px';
+        
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              // Cuando la sección es visible, mostrarla con una animación suave
+              setTimeout(() => {
+                section.classList.add('opacity-100');
+              }, 100);
+              
+              // Dejar de observar esta sección
+              observer.unobserve(section);
+            }
+          });
+        }, {
+          threshold,
+          rootMargin
+        });
+        
+        observer.observe(section);
+      });
+    } else {
+      // Fallback para navegadores que no soportan IntersectionObserver
+      sections.forEach(section => {
+        section.classList.add('opacity-100');
+      });
+    }
+  });
+</script>

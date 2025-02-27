@@ -1,0 +1,331 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+import Portada from '../assets/images/Hero/posible-portada.jpg';
+import AboutImage from '../assets/images/About/About.png'
+import DisenoArquitectonico from '../assets/images/diseno-arquitectonico.jpg';
+import ReparacionesLocativas from '../assets/images/reparaciones-locativas.jpg';
+import ProyectosMetalmecanicos from '../assets/images/proyectos-metalmecanicos.jpg';
+
+import HeroMain from '../components/hero/HeroMain';
+
+import CompanyTicker from '../components/clients/Ribbon';
+import type { Company } from '../components/clients/Ribbon';
+
+import ProjectsGrid from '../components/proyectgrid/ProyectGrid';
+
+import type { loadRenderers } from 'astro:container';
+import ProjectsTitle from '@/components/proyectgrid/ProyectTitle';
+
+import Container from '../utils/Container.astro';
+import About from '../components/about/AboutUs.astro';
+
+import BentoGrid from '../components/bentogrid/BentoGrid'
+
+import HeroBanner from '../components/banner/Banner.astro';
+import ContactSection from '../components/contactForm/ContactSection.astro';
+
+const companies: Company[] = [
+  { 
+    type: 'logo',
+    content: '/companies/skf-omia.png',
+    name: 'Consorcio SKF OMIA'
+  },
+  { 
+    type: 'logo',
+    content: '/companies/Alcaldia_SIncelejo.png',
+    name: 'Alcaldia de Sincelejo'
+  },
+  { 
+    type: 'logo',
+    content: '/companies/alcaldia_san_antero.png',
+    name: 'Alcaldia de San Antero'
+  },
+  { 
+    type: 'logo',
+    content: '/companies/buzca.png',
+    name: 'Buzca'
+  },
+  { 
+    type: 'logo',
+    content: '/companies/conequipos.png',
+    name: 'Conequipos'
+  },
+  { 
+    type: 'logo',
+    content: '/companies/coomeva.png',
+    name: 'Coomeva'
+  },
+  { 
+    type: 'logo',
+    content: '/companies/grupo_exito.png',
+    name: 'Grupo Exito'
+  },
+  { 
+    type: 'logo',
+    content: '/companies/logo_sacyr.png',
+    name: 'Sacyr'
+  },
+  { 
+    type: 'logo',
+    content: '/companies/logo-cuenca.png',
+    name: 'Cuenca'
+  },
+  { 
+    type: 'logo',
+    content: '/companies/logo-ecopetrol.png',
+    name: 'Ecopetrol'
+  },
+  { 
+    type: 'logo',
+    content: '/companies/termotecnica.png',
+    name: 'Termotecnica'
+  },
+  { 
+    type: 'logo',
+    content: '/companies/trimeca.png',
+    name: 'Trimeca'
+  },
+];
+
+export const projects = [
+  {
+    id: '1',
+    name: "Victoria Chen",
+    type: "Lead UX Designer",
+    imageUrl: "/api/placeholder/300/300",
+    priority: true
+  },
+  {
+    id: '2',
+    name: "Marcus Rodriguez",
+    type: "Backend Developer",
+    imageUrl: "/api/placeholder/300/300",
+    priority: false
+  },
+  {
+    id: '3',
+    name: "Sophie Laurent",
+    type: "Product Manager",
+    imageUrl: "/api/placeholder/300/300",
+    priority: true
+  },
+  {
+    id: '4',
+    name: "Akiko Tanaka",
+    type: "Frontend Developer",
+    imageUrl: "/api/placeholder/300/300",
+    priority: false
+  },
+  {
+    id: '5',
+    name: "David Kim",
+    type: "Data Scientist",
+    imageUrl: "/api/placeholder/300/300",
+    priority: true
+  },
+  {
+    id: '6',
+    name: "Elena Popov",
+    type: "DevOps Engineer",
+    imageUrl: "/api/placeholder/300/300",
+    priority: false
+  },
+  {
+    id: '7',
+    name: "Mohammed Al-Rashid",
+    type: "Solutions Architect",
+    imageUrl: "/api/placeholder/300/300",
+    priority: true
+  },
+  {
+    id: '8',
+    name: "Isabella Santos",
+    type: "UI/UX Designer",
+    imageUrl: "/api/placeholder/300/300",
+    priority: false
+  },
+  {
+    id: '9',
+    name: "Lars Andersson",
+    type: "Cloud Engineer",
+    imageUrl: "/api/placeholder/300/300",
+    priority: false
+  },
+  {
+    id: '10',
+    name: "Sarah Johnson",
+    type: "Mobile Developer",
+    imageUrl: "/api/placeholder/300/300",
+    priority: true
+  },
+  {
+    id: '11',
+    name: "Raj Patel",
+    type: "Full Stack Developer",
+    imageUrl: "/api/placeholder/300/300",
+    priority: false
+  },
+  {
+    id: '12',
+    name: "Maria García",
+    type: "Security Engineer",
+    imageUrl: "/api/placeholder/300/300",
+    priority: false
+  },
+  {
+    id: '13',
+    name: "Thomas Weber",
+    type: "System Administrator",
+    imageUrl: "/api/placeholder/300/300",
+    priority: true
+  },
+  {
+    id: '14',
+    name: "Nina Kowalski",
+    type: "QA Engineer",
+    imageUrl: "/api/placeholder/300/300",
+    priority: false
+  },
+  {
+    id: '15',
+    name: "Oliver Smith",
+    type: "Machine Learning Engineer",
+    imageUrl: "/api/placeholder/300/300",
+    priority: true
+  },
+  {
+    id: '16',
+    name: "Yuki Yamamoto",
+    type: "Blockchain Developer",
+    imageUrl: "/api/placeholder/300/300",
+    priority: false
+  },
+  {
+    id: '17',
+    name: "Camille Dubois",
+    type: "Project Coordinator",
+    imageUrl: "/api/placeholder/300/300",
+    priority: false
+  },
+  {
+    id: '18',
+    name: "Leo van der Berg",
+    type: "Database Administrator",
+    imageUrl: "/api/placeholder/300/300",
+    priority: true
+  },
+  {
+    id: '19',
+    name: "Ana Silva",
+    type: "Software Architect",
+    imageUrl: "/api/placeholder/300/300",
+    priority: false
+  },
+  {
+    id: '20',
+    name: "James Wilson",
+    type: "API Developer",
+    imageUrl: "/api/placeholder/300/300",
+    priority: false
+  }
+];
+
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+
+<Layout >
+	
+	<!-- <Hero 
+  client:load
+  title="Rodriguez Y Carvajal"
+  description="es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. "
+  buttonText="Contactate con Nosotros"
+  imgSrc={Portada.src}
+  imgAlt="Tu Alt Text"
+	height="h-screen"
+  className="border-b"
+  containerClassName="py-8"
+/> -->
+<main class="">
+  <!-- image={Portada.src} -->
+  <!-- Puedes usar: 'screen', 'auto', 'half', o cualquier clase Tailwind 'h-*' -->
+  
+  <HeroMain
+    client:load     
+    height="screen" 
+    title="Rodriguez y Carvajal"
+    description="Nuestro principal objetivo es generar soluciones que permitan hacer de nuestros clientes líderes en su gestión productiva."
+    slogan='¡Aliados para solucionar efectivamente los retos de grandes empresas!'
+    buttonText="Contactanos"
+    userCount={500}
+    rating={5}
+    withHookText={true}
+    hookText="Descubre Rodriguez y Carvajal"    
+    gridImages={[
+      Portada.src,
+      DisenoArquitectonico.src,
+      ReparacionesLocativas.src,
+      ProyectosMetalmecanicos.src
+    ]}
+    userImage="/solo-logo.png"
+  />
+
+
+  <About 
+    title="Nuestra Empresa"
+    description="Somos una empresa con gran experiencia en mantenimiento de líneas en general, trabajos metalmecánicos, construcción de obras civiles, interventoría y consultoría, servicios de ingeniería. Nuestra base de trabajo está conformado por un excelente personal calificado, equipos y herramientas que garantizan la calidad de nuestros servicios al sector público y privado. RODRÍGUEZ Y CARVAJAL SAS, como una iniciativa empresarial para el apoyo del progreso de la región. Desde nuestros inicios hemos provisto servicios técnicos e ingeniería de alta calidad al sector industrial, caracterizándonos por la buena atención a nuestros clientes y la flexibilidad para responder a sus necesidades."
+    imageSrc={AboutImage.src}
+    imageAlt="Nuestro equipo trabajando"
+    reverse={false}
+    button={true}
+  />
+
+  <section class="py-16 bg-gradient-to-br from-gray-800 via-gray-600 to-lime-400">
+    
+    <BentoGrid/>
+  </section>
+
+  <!-- <HeroBanner
+      title="Supervisión y"
+      subtitle="Ejecución de Obras"
+      date={{
+        day: "20",
+        month: "ENE",
+        year: "2022"
+      }}
+      backgroundImage={AboutImage.src}
+    /> -->
+
+  <div class="w-full">
+    <CompanyTicker 
+    client:load 
+    companies={companies}
+    speed={60}                    // Duración de la animación en segundos (default: 40)
+    containerWidth="80%"       // Ancho máximo del contenedor (default: '100%')
+    spacing={48}                  // Espaciado entre elementos en píxeles (default: 32)
+    itemHeight={20}
+    />
+  </div>
+
+    
+
+  
+
+  
+
+  <!-- <section class="relative w-full overflow-hidden bg-gray-50">
+    <div class="relative w-full h-[75vh] overflow-hidden">
+      <div class="absolute inset-0 z-10">
+        <ProjectsTitle client:load />
+      </div>
+      <div class="absolute inset-0">
+      </div>
+    </div>
+  </section> -->
+
+  <ContactSection/>
+  
+</main>
+</Layout>

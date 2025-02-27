@@ -1,0 +1,177 @@
+---
+import Layout from '../layouts/Layout.astro';
+import GradientText, { AnimationStyles } from '@/utils/GradientText';
+import AboutImage from '../assets/images/About/About.png';
+import About from '../components/about/AboutUs.astro';
+import FadeIn from '@/utils/FadeIn';
+import ContactSection from '@/components/contactForm/ContactSection.astro';
+---
+
+<Layout>
+  <!-- Hero Section con imagen de fondo -->
+  <section class="relative h-96 bg-blue-500 flex items-center justify-center">
+    <!-- Placeholder para imagen hero -->
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-800 via-blue-600 to-blue-200 bg-opacity-50"></div>
+    <div class="relative z-10 text-center text-white">
+      <FadeIn client:visible>
+        <h1 class="text-2xl sm:text-4xl md:text-5xl lg:text-8xl font-bold text-blue-100 tracking-tight -mt-1">
+          <GradientText
+              animated={true} 
+              animationDuration="normal"
+              from="from-blue-500"
+              to="to-lime-500"
+              direction="right"
+              className="leading-[1.1] font-display"
+            >
+            RODRIGUEZ Y CARVAJAL SAS
+          </GradientText>
+        </h1>
+      </FadeIn>
+        <p class="text-xl">Excelencia en servicios técnicos e ingeniería desde 1999</p>
+    </div>
+  </section>
+
+  <!-- Sección de Información Principal -->
+  <FadeIn client:visible delay={200}>
+  <section class="max-w-7xl mx-auto px-4 py-16">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="space-y-6">            
+            <FadeIn client:visible delay={200}>
+              <h2 class="text-3xl font-bold tracking-tighter sm:text-5xl md:text-7xl text-lime-400">
+                Nuestra Historia
+              </h2>
+            </FadeIn>
+            <p class="text-gray-600 leading-relaxed">
+                RODRÍGUEZ Y CARVAJAL SAS nació en 1999 como una iniciativa empresarial para el apoyo del progreso de la región. Desde nuestros inicios hemos provisto servicios técnicos e ingeniería de alta calidad al sector industrial, caracterizándonos por la buena atención a nuestros clientes y la flexibilidad para responder a sus necesidades.
+            </p>
+        </div>
+        <div class="bg-gray-300 h-80 w-full flex items-center justify-center">
+            <!-- Placeholder para imagen de la empresa -->
+            <div class="relative group overflow-hidden rounded-lg shadow-lg">
+              <FadeIn client:visible delay={200}>
+                <img
+                  src={AboutImage.src}
+                  alt="Nosotros"
+                  class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                  loading="lazy"
+                />
+              </FadeIn>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+        </div>
+    </div>
+</section>
+</FadeIn>
+
+  <!-- Sección de Información Principal -->
+  <section class="max-w-7xl mx-auto px-4 py-16">
+    <About 
+      title="Nuestra Empresa"
+      description="Somos una empresa con gran experiencia en mantenimiento de líneas en general, trabajos metalmecánicos, construcción de obras civiles, interventoría y consultoría, servicios de ingeniería. Nuestra base de trabajo está conformado por un excelente personal calificado, equipos y herramientas que garantizan la calidad de nuestros servicios al sector público y privado. RODRÍGUEZ Y CARVAJAL SAS, como una iniciativa empresarial para el apoyo del progreso de la región. Desde nuestros inicios hemos provisto servicios técnicos e ingeniería de alta calidad al sector industrial, caracterizándonos por la buena atención a nuestros clientes y la flexibilidad para responder a sus necesidades."
+      imageSrc={AboutImage.src}
+      imageAlt="Nuestro equipo trabajando"
+      reverse={false}
+    />
+  </section>
+
+  <!-- Sección de Misión y Visión -->
+  <section class="bg-gray-100 py-16">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="grid md:grid-cols-2 gap-12">
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                
+                <FadeIn client:visible delay={200}>
+                  <h3 class="text-2xl font-bold tracking-tighter sm:text-3xl md:text-5xl text-lime-400">
+                    Misión
+                  </h3>
+                  <p class="text-gray-600 leading-relaxed">
+                      Con un equipo altamente comprometido desarrollado en un ambiente laboral seguro y sostenible, ofrecemos servicios técnicos y de ingeniería de alta calidad en el sector público y privado, satisfaciendo las necesidades de nuestros clientes en los diferentes proyectos.
+                  </p>
+                </FadeIn>
+            </div>
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+              <FadeIn client:visible delay={200}>
+                <h3 class="text-2xl font-bold tracking-tighter sm:text-3xl md:text-5xl text-lime-400">
+                  Visión
+                </h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Ser una empresa de referencia en el ámbito regional, con reconocimiento nacional, todo ello con la mejora continua, con un equipo humano competente, motivado y comprometido para así brindar el mejor servicio a nuestros clientes.
+                </p>
+              </FadeIn>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- Sección de Filosofía Empresarial -->
+  <section class="py-16 bg-[#1d5596] text-white text-center">
+    <div class="max-w-4xl mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-6">Filosofía Empresarial</h2>
+        <p class="text-xl italic">
+            "Nuestro principal objetivo es generar soluciones que permitan hacer de nuestros clientes líderes en su gestión productiva"
+        </p>
+    </div>
+  </section>
+
+  <ContactSection/>
+
+  <!-- Sección de Contacto -->
+  <!-- <section class="max-w-7xl mx-auto px-4 py-16">
+    <div class="bg-white rounded-lg shadow-lg p-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Información de Contacto</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="space-y-4">
+                <h3 class="text-xl font-semibold text-gray-800">Ubicación</h3>
+                <p class="text-gray-600">
+                    CALLE 26 N 16 A -95 OFICINA 201<br>
+                    BARRIO SANTA FE
+                </p>
+            </div>
+            <div class="space-y-4">
+                <h3 class="text-xl font-semibold text-gray-800">Contacto</h3>
+                <p class="text-gray-600">
+                    Teléfono: 323 4633005<br>
+                    Email: administracion@rodriguezycarvajal.com<br>
+                    Email: gerencia@rodriguezycarvajal.com
+                </p>
+            </div>
+        </div>
+    </div>
+  </section> -->
+</Layout>
+
+<style>
+  /* Animación de entrada */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  section {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  /* Asegura que las imágenes sean responsivas */
+  img {
+    max-height: 600px;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Mejora la accesibilidad del contraste */
+  @media (prefers-reduced-motion: reduce) {
+    section {
+      animation: none;
+    }
+    
+    .group-hover\:scale-105 {
+      transform: none;
+    }
+  }
+</style>

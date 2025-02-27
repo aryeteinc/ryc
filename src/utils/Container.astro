@@ -1,0 +1,73 @@
+---
+// src/layouts/AboutContainer.astro
+interface Props {
+  class?: string;
+  id?: string;
+  backgroundColor?: string;
+}
+
+const {
+  class: className,
+  id = "about-section",
+  backgroundColor = "bg-gray-50"
+} = Astro.props;
+---
+
+<div 
+  id={id} 
+  class:list={[
+    "relative overflow-hidden isolate",
+    backgroundColor,
+    className
+  ]}
+>
+  <!-- Elementos decorativos de fondo -->
+  <div class="absolute inset-0 -z-10">
+    <div class="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white opacity-50"></div>
+    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white opacity-50"></div>
+  </div>
+  
+  <!-- Formas decorativas -->
+  <div class="absolute -top-4 -left-4 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob"></div>
+  <div class="absolute -bottom-8 right-0 w-72 h-72 bg-yellow-200 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-2000"></div>
+  
+  <!-- Contenedor del contenido -->
+  <div class="relative">
+    <slot />
+  </div>
+</div>
+
+<style>
+  @keyframes blob {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+  }
+  
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+  
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  
+  .isolate {
+    z-index: 0;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .animate-blob {
+      animation: none;
+    }
+  }
+</style>

@@ -1,0 +1,24 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.astro",
+    "src/**/*.jsx"
+  ],
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {    
+    "strictNullChecks": true,
+    "allowJs": true,
+    "types": ["astro/client"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@utils/*": ["src/utils/*"]
+    },
+    "jsxImportSource": "react",
+    "verbatimModuleSyntax": true
+  }
+}

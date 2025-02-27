@@ -1,0 +1,270 @@
+/* Estilos para Swiper - Versión tradicional */
+.swiper {
+  padding: 8px 0 32px 0;
+}
+
+.swiper-slide {
+  width: auto;
+  height: auto;
+  transition: transform 0.2s ease;
+}
+
+.swiper-slide-custom {
+  width: 100%;
+  max-width: 900px;
+}
+
+/* Estilos de navegación */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #1d4ed8;
+  background: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background: #f8fafc;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 16px;
+}
+
+/* Estilos de paginación */
+.swiper-pagination {
+  bottom: 0 !important;
+}
+
+.swiper-pagination-bullet {
+  background: #1d4ed8;
+  opacity: 0.5;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #1d4ed8;
+}
+
+/* Estilos para miniaturas */
+.thumbnails-swiper .swiper-slide {
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.thumbnails-swiper .swiper-slide-thumb-active {
+  border-color: #1d4ed8;
+}
+
+.thumbnails-swiper .swiper-button-next,
+.thumbnails-swiper .swiper-button-prev {
+  width: 30px;
+  height: 30px;
+}
+
+.thumbnails-swiper .swiper-button-next:after,
+.thumbnails-swiper .swiper-button-prev:after {
+  font-size: 14px;
+}
+
+/* Estilos para la galería tipo bento grid */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+/* Estilos para las imágenes */
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  aspect-ratio: 1/1;
+  transition: transform 0.2s ease;
+}
+
+.gallery-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+/* Estilos para el modal de zoom */
+.zoom-modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.zoom-modal img {
+  max-height: 90vh;
+  max-width: 90vw;
+  object-fit: contain;
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 9999px;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+/* Estilos para SimpleGallery */
+.simple-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .simple-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .simple-gallery-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .simple-gallery-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.simple-gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.simple-gallery-item:hover {
+  transform: scale(1.02);
+}
+
+.simple-gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.simple-gallery-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.simple-gallery-caption-text {
+  color: white;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Estilos para Lightbox */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.lightbox-container {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.lightbox-close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 9999px;
+  padding: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.lightbox-close-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.lightbox-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-caption-text {
+  color: white;
+  text-align: center;
+}
+
+/* Estilos para el spinner de carga */
+.loading-spinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6;
+}
+
+.spinner-svg {
+  animation: spin 1s linear infinite;
+  height: 2rem;
+  width: 2rem;
+  color: #9ca3af;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

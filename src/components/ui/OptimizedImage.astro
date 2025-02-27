@@ -1,0 +1,263 @@
+---
+/**
+ * Componente OptimizedImage
+ * 
+ * Este componente proporciona imágenes optimizadas con:
+ * - Soporte para WebP con fallback a formatos tradicionales
+ * - Diferentes tamaños para distintos dispositivos (responsive)
+ * - Lazy loading integrado
+ * - Manejo de placeholders mientras se carga la imagen
+ * - Caché de imágenes para mejorar el rendimiento
+ * - Precarga de imágenes para una experiencia más fluida
+ */
+
+interface Props {
+  src: string;           // Ruta de la imagen original
+  alt: string;           // Texto alternativo para accesibilidad
+  width?: number;        // Ancho original de la imagen (opcional)
+  height?: number;       // Alto original de la imagen (opcional)
+  class?: string;        // Clases CSS adicionales
+  eager?: boolean;       // Si es true, carga la imagen de inmediato (no lazy)
+  sizes?: string;        // Atributo sizes para imágenes responsive
+  preload?: boolean;     // Si es true, preload la imagen (para imágenes críticas)
+  placeholder?: string;  // URL de imagen placeholder mientras carga
+}
+
+const { 
+  src, 
+  alt, 
+  width, 
+  height, 
+  class: className = "", 
+  eager = false,
+  sizes = "(min-width: 1024px) 1024px, 100vw",
+  preload = false,
+  placeholder = ""
+} = Astro.props;
+
+// Determinar si la imagen es local o externa
+const isExternal = src.startsWith('http') || src.startsWith('//');
+
+// Función para generar la URL de WebP si es una imagen local
+function getWebPUrl(originalSrc: string): string {
+  if (isExternal) return originalSrc; // No modificamos URLs externas
+  
+  // Extraer la extensión y el nombre base
+  const lastDotIndex = originalSrc.lastIndexOf('.');
+  if (lastDotIndex === -1) return originalSrc; // No tiene extensión
+  
+  const baseName = originalSrc.substring(0, lastDotIndex);
+  return `${baseName}.webp`;
+}
+
+// Generar URLs para diferentes tamaños (solo para imágenes locales)
+function getSrcSet(originalSrc: string): string | undefined {
+  if (isExternal) return undefined; // No generamos srcset para URLs externas
+  
+  const webpUrl = getWebPUrl(originalSrc);
+  return `${webpUrl}?w=640 640w, ${webpUrl}?w=768 768w, ${webpUrl}?w=1024 1024w, ${webpUrl}?w=1280 1280w`;
+}
+
+const webpSrc = getWebPUrl(src);
+const srcset = getSrcSet(src);
+
+// Generar un ID único para esta imagen
+const imageId = `img-${Math.random().toString(36).substring(2, 9)}`;
+---
+
+{preload && (
+  <link rel="preload" href={src} as="image" />
+)}
+
+<picture class="optimized-image-container">
+  {!isExternal && (
+    <source
+      srcset={srcset}
+      sizes={sizes}
+      type="image/webp"
+    />
+  )}
+  {placeholder && (
+    <div class="placeholder-container">
+      <img 
+        src={placeholder} 
+        alt="" 
+        class="placeholder-image" 
+        aria-hidden="true"
+        width={width}
+        height={height}
+      />
+    </div>
+  )}
+  <img
+    id={imageId}
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={eager ? "eager" : "lazy"}
+    decoding={eager ? "sync" : "async"}
+    fetchpriority={eager ? "high" : "auto"}
+    class:list={[
+      "transition-opacity duration-300 optimized-image",
+      className
+    ]}
+    data-src={src}
+  />
+</picture>
+
+<style>
+  .optimized-image-container {
+    position: relative;
+    display: block;
+    overflow: hidden;
+  }
+  
+  .placeholder-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  .placeholder-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(10px);
+    transform: scale(1.1);
+  }
+  
+  .optimized-image {
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeIn 0.3s ease-in-out forwards;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>
+
+<script>
+  // Importar la clase ImageCache
+  import { ImageCache } from '../../utils/imageCache';
+  
+  // Script para manejar el evento de carga de imágenes y caché
+  document.addEventListener('astro:page-load', () => {
+    const imageCache = ImageCache.getInstance();
+    const images = document.querySelectorAll('img.optimized-image');
+    
+    // Función para manejar la carga de una imagen
+    const handleImageLoad = async (img: HTMLImageElement) => {
+      const src = img.getAttribute('data-src');
+      if (!src) return;
+      
+      // Intentar obtener la imagen del caché
+      const cachedSrc = await imageCache.getImage(src);
+      if (cachedSrc) {
+        // Si está en caché, usarla
+        img.src = cachedSrc;
+        img.style.opacity = '1';
+        
+        // Ocultar el placeholder si existe
+        const container = img.closest('.optimized-image-container');
+        const placeholder = container?.querySelector('.placeholder-container');
+        if (placeholder) {
+          placeholder.classList.add('hidden');
+        }
+      } else {
+        // Si no está en caché, esperar a que se cargue normalmente
+        if (img.complete) {
+          img.style.opacity = '1';
+          // Cachear la imagen para futuras cargas
+          imageCache.preCache(src);
+          
+          // Ocultar el placeholder
+          const container = img.closest('.optimized-image-container');
+          const placeholder = container?.querySelector('.placeholder-container');
+          if (placeholder) {
+            placeholder.classList.add('hidden');
+          }
+        } else {
+          // Si no, esperar a que se cargue
+          img.addEventListener('load', () => {
+            img.style.opacity = '1';
+            // Cachear la imagen para futuras cargas
+            imageCache.preCache(src);
+            
+            // Ocultar el placeholder
+            const container = img.closest('.optimized-image-container');
+            const placeholder = container?.querySelector('.placeholder-container');
+            if (placeholder) {
+              placeholder.classList.add('hidden');
+            }
+          });
+        }
+      }
+    };
+    
+    // Procesar todas las imágenes
+    images.forEach(img => {
+      if (img instanceof HTMLImageElement) {
+        handleImageLoad(img);
+      }
+    });
+    
+    // Precachear las imágenes que están en el viewport o cerca
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.target instanceof HTMLImageElement) {
+          const src = entry.target.getAttribute('data-src');
+          if (src) {
+            imageCache.preCache(src);
+          }
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '200px' // Precachear imágenes que están a 200px de entrar en el viewport
+    });
+    
+    // Observar todas las imágenes
+    images.forEach(img => {
+      observer.observe(img);
+    });
+  });
+  
+  // Precachear las imágenes de la siguiente página
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    const link = target.closest('a');
+    
+    if (link && link.href && link.href.startsWith(window.location.origin)) {
+      // Es un enlace interno, precachear las imágenes de la página de destino
+      const imageCache = ImageCache.getInstance();
+      
+      // Usar fetch para obtener el HTML de la página de destino
+      fetch(link.href)
+        .then(response => response.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const images = doc.querySelectorAll('img');
+          
+          // Extraer las URLs de las imágenes
+          const imageUrls = Array.from(images)
+            .map(img => img.src)
+            .filter(src => src && src.trim() !== '');
+          
+          // Precachear las imágenes (limitado a las 5 primeras para no sobrecargar)
+          const imagesToPreCache = imageUrls.slice(0, 5);
+          imageCache.preCacheMultiple(imagesToPreCache);
+        })
+        .catch(error => {
+          console.error('Error al precachear imágenes:', error);
+        });
+    }
+  });
+</script>

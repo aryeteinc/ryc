@@ -1,0 +1,35 @@
+---
+// src/pages/projects/index.astro
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import ProjectsContainer from '../../components/projectgallery/ProjectContainer';
+
+// Obtener colecciones
+const allProjects = await getCollection('projects');
+const allLineas = await getCollection('lineas');
+
+// Obtener parámetros de la URL
+const { searchParams } = Astro.url;
+const selectedLinea = searchParams.get('linea') || '';
+const searchQuery = searchParams.get('search') || '';
+
+// Ordenar líneas
+const sortedLineas = [...allLineas].sort((a, b) => {
+  if (a.data.order && b.data.order) return a.data.order - b.data.order;
+  if (a.data.order) return -1;
+  if (b.data.order) return 1;
+  return a.data.title.localeCompare(b.data.title);
+});
+---
+
+<Layout bgColorNavBar="bg-blue-600">
+  <main class="py-32">
+    <ProjectsContainer
+      client:visible
+      initialProjects={allProjects}
+      lineas={sortedLineas}
+      initialLinea={selectedLinea}
+      initialSearch={searchQuery}
+    />
+  </main>
+</Layout>

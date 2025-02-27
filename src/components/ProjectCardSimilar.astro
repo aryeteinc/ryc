@@ -1,0 +1,91 @@
+---
+// Componente para mostrar una tarjeta de proyecto
+interface Props {
+  title: string;
+  description: string;
+  image: string;
+  slug: string;
+  client: string;
+  location: string;
+  status: 'completado' | 'en-proceso' | 'planificacion';
+  linea: string;
+  lineaSlug: string;
+}
+
+const { 
+  title, 
+  description, 
+  image, 
+  slug, 
+  client, 
+  location, 
+  status,
+  linea,
+  lineaSlug
+} = Astro.props;
+
+// Limitar la descripción a un número específico de caracteres
+const truncateDescription = (text: string, maxLength: number = 100) => {
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength).trim() + '...';
+};
+---
+
+<div class="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+  <a href={`/projects/${slug}`} class="block">
+    <div class="relative aspect-video overflow-hidden">
+      <img 
+        src={image} 
+        alt={title} 
+        loading="lazy"
+        decoding="async"
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+      />
+      
+      {/* Etiqueta de estado */}
+      <div class="absolute top-3 right-3">
+        <span class={`px-3 py-1.5 rounded-md text-xs font-medium
+          ${status === 'en-proceso' 
+            ? 'bg-blue-500/80 text-white' 
+            : status === 'completado'
+              ? 'bg-green-500/80 text-white'
+              : 'bg-gray-500/80 text-white'}`}
+        >
+          {status === 'en-proceso' ? '⚡ En Proceso' : 
+           status === 'completado' ? '✓ Completado' : 
+           '🔜 Planificado'}
+        </span>
+      </div>     
+    </div>
+    
+    <div class="p-5">
+      <h3 class="text-lg font-semibold mb-2 text-gray-900 line-clamp-2">{title}</h3>
+      {/* Categoría */}
+      {linea && (
+        <div class="">
+          <a 
+            href={`/projects?linea=${lineaSlug}`}
+            class="inline-block  text-blue-600/80 backdrop-blur-sm  rounded-md text-xs font-medium  transition-colors"
+          >
+            {linea}
+          </a>
+        </div>
+      )}
+      <p class="text-gray-600 text-sm mb-4 line-clamp-2">{truncateDescription(description)}</p>
+      
+      <div class="flex flex-wrap gap-3 text-xs text-gray-500">
+        {client && (
+          <div>
+            <span class="font-medium">Cliente:</span> {client}
+          </div>
+        )}
+        
+        {location && (
+          <div>
+            <span class="font-medium">Ubicación:</span> {location}
+          </div>
+        )}
+      </div>
+    </div>
+  </a>
+</div>

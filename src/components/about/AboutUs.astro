@@ -1,0 +1,110 @@
+---
+
+import FadeIn from '@/utils/FadeIn';
+import Button from '../ui/ButtonMain';
+// About.astro
+interface Props {
+  title?: string;
+  description?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  reverse?: boolean;
+  button?: boolean;
+}
+
+const {
+  title = "Nuestra Empresa",
+  description = "Somos una empresa comprometida con la excelencia y la innovación...",
+  imageSrc = "/api/placeholder/600/400",
+  imageAlt = "Imagen corporativa",
+  reverse = false,
+  button = false
+} = Astro.props;
+---
+
+<section class="w-full py-12 md:py-24 lg:py-32 bg-white">
+  <div class="container px-4 md:px-6 mx-auto">
+    <div class={`flex flex-col md:flex-row gap-6 lg:gap-12 items-center ${reverse ? 'md:flex-row-reverse' : ''}`}>
+      <!-- Contenido de texto -->
+      <div class="space-y-4 flex-1">
+        <div class="space-y-2">
+          <FadeIn client:visible>
+            <h2 class="text-3xl font-bold tracking-tighter sm:text-5xl md:text-7xl text-lime-400">
+              {title}
+            </h2>
+          </FadeIn>
+          <div class="w-12 h-1 bg-lime-400 rounded"></div>
+        </div>
+        <FadeIn client:visible delay={200}>
+          <p class="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+            {description}
+          </p>
+          <div class="my-8 w-full">
+            {button && 
+              <Button 
+                href='/nosotros'
+                backgroundColor="bg-gradient-to-r from-lime-500 to-lime-700"
+                hoverColor="hover:bg-gradient-to-r hover:from-lime-600 hover:to-lime-800"
+                className="w-full sm:w-auto justify-center text-sm sm:text-base px-6 sm:px-8"
+              >
+                Conoce Nuestra Historia
+              </Button>
+            }
+            
+            </div>
+        </FadeIn>
+      </div>
+      
+      <!-- Imagen -->
+      <div class="flex-1">
+        <div class="relative group overflow-hidden rounded-lg shadow-lg">
+          <FadeIn client:visible delay={200}>
+            <img
+              src={imageSrc}
+              alt={imageAlt}
+              class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+              loading="lazy"
+            />
+          </FadeIn>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Animación de entrada */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  section {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  /* Asegura que las imágenes sean responsivas */
+  img {
+    max-height: 600px;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Mejora la accesibilidad del contraste */
+  @media (prefers-reduced-motion: reduce) {
+    section {
+      animation: none;
+    }
+    
+    .group-hover\:scale-105 {
+      transform: none;
+    }
+  }
+</style>

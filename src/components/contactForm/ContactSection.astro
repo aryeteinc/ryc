@@ -1,0 +1,51 @@
+---
+import EmailForm from './EmailForm.astro';
+---
+
+<section class="relative bg-gradient-to-b from-[#014F86] to-[#2BB673] min-h-screen p-8" id="contacto">
+  <div class="container mx-auto max-w-7xl">
+    <div class="grid lg:grid-cols-2 gap-12 items-center pt-16">
+      {/* Columna de texto */}
+      <div class="text-white">
+        <h2 class="text-5xl font-bold mb-6">
+          <span class="text-[#90EE90]">Rodriguez y</span><br/>
+          <span class="text-[#90EE90]">Carvajal</span>
+        </h2>
+        <p class="text-xl mb-8">
+          ¡Aliados para solucionar efectivamente los retos de grandes empresas!
+        </p>
+        <p class="text-lg mb-8">
+          Con más de 25 años de experiencia, nos hemos posicionado como líderes en soluciones de ingeniería y gestión productiva. Nuestro enfoque integral y compromiso con la excelencia nos ha permitido desarrollar proyectos exitosos en diversos sectores industriales, desde infraestructura hasta automatización.
+        </p>
+        <div class="flex items-center gap-2 mb-8">
+          <p class="text-white text-lg">Nuestro principal objetivo es generar soluciones que permitan hacer de nuestros clientes líderes en su gestión productiva, implementando tecnologías innovadoras y metodologías probadas que garantizan resultados medibles y sostenibles.</p>
+          
+        </div>
+      </div>
+
+      {/* Columna del formulario */}
+      <div class="bg-white rounded-3xl p-8 shadow-2xl">
+        <div class="mb-8 text-center">
+          <h3 class="text-2xl font-bold text-[#014F86] mb-4">Contáctanos</h3>
+          <p class="text-gray-600">
+            ¿Buscas optimizar la gestión productiva de tu empresa? Estamos aquí para ayudarte. Déjanos tus datos y uno de nuestros expertos se pondrá en contacto contigo para discutir cómo podemos impulsar el éxito de tu negocio. Comprometidos con la excelencia y la innovación en cada proyecto.
+          </p>
+        </div>
+        <EmailForm />
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<style>
+  section {
+    background-image: linear-gradient(180deg, #1d5596 0%, #abbf36 100%);
+  }
+
+  @media (max-width: 768px) {
+    section {
+      padding: 4rem 1rem;
+    }
+  }
+</style>

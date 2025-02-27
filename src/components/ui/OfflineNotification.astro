@@ -1,0 +1,73 @@
+---
+/**
+ * Componente OfflineNotification
+ * 
+ * Muestra una notificación cuando el usuario está offline
+ * y proporciona feedback sobre el estado de la conexión
+ */
+---
+
+<div id="offline-notification" class="fixed bottom-4 left-4 bg-red-600 text-white p-4 rounded-lg shadow-lg z-50 transform transition-transform duration-300 translate-y-full hidden">
+  <div class="flex items-center">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+    </svg>
+    <span>Estás navegando sin conexión. Algunas funciones pueden no estar disponibles.</span>
+  </div>
+</div>
+
+<div id="back-online-notification" class="fixed bottom-4 left-4 bg-green-600 text-white p-4 rounded-lg shadow-lg z-50 transform transition-transform duration-300 translate-y-full hidden">
+  <div class="flex items-center">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+    </svg>
+    <span>Conexión restablecida.</span>
+  </div>
+</div>
+
+<script>
+  // Función para mostrar la notificación offline
+  function showOfflineNotification() {
+    const notification = document.getElementById('offline-notification');
+    if (notification) {
+      notification.classList.remove('hidden', 'translate-y-full');
+      notification.classList.add('translate-y-0');
+      
+      // Ocultar después de 5 segundos
+      setTimeout(() => {
+        notification.classList.add('translate-y-full');
+      }, 5000);
+    }
+  }
+  
+  // Función para mostrar la notificación de vuelta online
+  function showBackOnlineNotification() {
+    const notification = document.getElementById('back-online-notification');
+    if (notification) {
+      notification.classList.remove('hidden', 'translate-y-full');
+      notification.classList.add('translate-y-0');
+      
+      // Ocultar después de 3 segundos
+      setTimeout(() => {
+        notification.classList.add('translate-y-full');
+      }, 3000);
+    }
+  }
+  
+  // Detectar cambios en la conexión
+  document.addEventListener('astro:page-load', () => {
+    // Verificar el estado inicial
+    if (!navigator.onLine) {
+      showOfflineNotification();
+    }
+    
+    // Escuchar eventos de conexión
+    window.addEventListener('online', () => {
+      showBackOnlineNotification();
+    });
+    
+    window.addEventListener('offline', () => {
+      showOfflineNotification();
+    });
+  });
+</script>

@@ -1,0 +1,110 @@
+---
+import '../styles/global.css';
+import '../styles/gallery.css';
+import Navbar from '../components/navigation/Navbar';
+import { ScrollNavbarEffect } from '../utils/ScrollNavBarEffect';
+import Footer from '../components/footer/Footer';
+
+import WhatsAppButton from '../components/whatsapp/Whatsapp';
+import OfflineNotification from '../components/ui/OfflineNotification.astro';
+
+interface LayoutProps {
+	bgColorNavBar: string;
+}
+
+const { bgColorNavBar } = Astro.props;
+const path_proyectos = import.meta.env.PUBLIC_PATH_PROJECTS;
+---
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/solo-logo.png" />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<!-- Inter es una excelente alternativa moderna a DIN Pro -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- O Titillium Web, que tiene un aspecto técnico similar -->
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap" rel="stylesheet">
+		<meta name="generator" content={Astro.generator} />
+		<title>RyC | Rodriguez y Carvajal</title>
+		
+		<!-- Meta tags para SEO -->
+		<meta name="description" content="Rodriguez y Carvajal - Empresa líder en soluciones de ingeniería y gestión productiva con más de 25 años de experiencia." />
+		<meta name="keywords" content="ingeniería, proyectos, construcción, diseño arquitectónico, obras civiles, proyectos metalmecanicos" />
+		
+		<!-- Meta tags para redes sociales -->
+		<meta property="og:title" content="Rodriguez y Carvajal - Soluciones de Ingeniería" />
+		<meta property="og:description" content="Empresa líder en soluciones de ingeniería y gestión productiva con más de 25 años de experiencia." />
+		<meta property="og:image" content="/solo-logo.png" />
+		<meta property="og:url" content="https://rodriguezycarvajal.com" />
+		<meta property="og:type" content="website" />
+		
+		<!-- Meta tags para PWA -->
+		<meta name="theme-color" content="#014F86" />
+		<link rel="manifest" href="/manifest.json" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+	</head>
+	<body>
+		
+		<ScrollNavbarEffect
+      threshold={50}
+      scrolledClassName="bg-transparent backdrop-blur-md shadow-md"
+      atTopClassName="bg-white"
+    >
+			<Navbar 
+				client:load
+				logoUrl="/solo-logo.png"
+				logoAlt="Mi Logo"
+				logoClassName="h-16 w-auto"
+				bgColor={bgColorNavBar}
+				justifyContent="between"
+				buttonText="Contactanos"
+				className=''
+				links={[
+					{ href: '/', label: 'Inicio' },
+					{ href: `/${path_proyectos}`, label: 'Proyectos' },
+					{ href: '/nosotros', label: 'Empresa' }
+				]}
+				buttonHref='/#contacto'
+				buttonStyles={{
+					backgroundColor: 'bg-blue-500',
+					hoverColor: 'hover:bg-blue-200 ',
+					textColor: 'text-white',
+					className: 'font-bold hover:underline'
+				}}
+			/>
+		</ScrollNavbarEffect>
+		<slot />
+		<WhatsAppButton client:load phoneNumber="+34611178964" />
+		<Footer client:load/>
+		<OfflineNotification />
+		
+		<!-- Script para registrar el Service Worker -->
+		<script>
+			// Registrar el service worker
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', () => {
+					navigator.serviceWorker.register('/service-worker.js')
+						.then(registration => {
+							console.log('Service Worker registrado con éxito:', registration.scope);
+						})
+						.catch(error => {
+							console.log('Error al registrar el Service Worker:', error);
+						});
+				});
+			}
+		</script>
+		
+		<!-- Script para inicializar el sistema de precarga -->
+		<script>
+			import { initPreloadSystem } from '../utils/preloadCriticalImages';
+			
+			// Inicializar el sistema de precarga cuando la página esté lista
+			document.addEventListener('astro:page-load', () => {
+				initPreloadSystem();
+			});
+		</script>
+	</body>
+</html>

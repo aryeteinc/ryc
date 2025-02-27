@@ -1,0 +1,23 @@
+{
+  "name": "Rodriguez y Carvajal - Soluciones de Ingeniería",
+  "short_name": "RyC",
+  "description": "Empresa líder en soluciones de ingeniería y gestión productiva con más de 25 años de experiencia.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#014F86",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/solo-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

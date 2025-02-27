@@ -1,0 +1,56 @@
+---
+import OptimizedImage from './ui/OptimizedImage.astro';
+import ModernProjectGallery from './projectgallery/ModernProjectGallery';
+
+interface GalleryItem {
+  url: string;
+  alt?: string;
+  type: 'image' | 'video';
+  thumbnail?: string;
+}
+
+interface Props {
+  items: GalleryItem[];
+  title?: string;
+  useModernGallery?: boolean;
+}
+
+const { items, title, useModernGallery = true } = Astro.props;
+
+// Filtrar solo las imágenes para la galería moderna
+const imageItems = items.filter(item => item.type === 'image').map(item => ({
+  url: item.url,
+  alt: item.alt || '',
+  thumbnail: item.thumbnail || item.url
+}));
+
+---
+
+{useModernGallery ? (
+  <ModernProjectGallery
+    client:visible
+    images={imageItems}
+    title={title}
+  />
+) : (
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+    {items.map(item => (
+      <div class="aspect-square">
+        {item.type === 'image' ? (
+          <OptimizedImage 
+            src={item.url} 
+            alt={item.alt || ''} 
+            class="w-full h-full object-cover rounded-lg"
+          />
+        ) : (
+          <video 
+            src={item.url} 
+            controls 
+            preload="none"
+            class="w-full h-full object-cover rounded-lg"
+          />
+        )}
+      </div>
+    ))}
+  </div>
+)}
